@@ -10,8 +10,8 @@ import (
 	"time"
 
 	"github.com/go-chi/chi/v5"
-	"github.com/user/cursor-gateway/internal/admin"
-	"github.com/user/cursor-gateway/internal/config"
+	"github.com/chaojimct/cli-agent-gateway/internal/admin"
+	"github.com/chaojimct/cli-agent-gateway/internal/config"
 	"nhooyr.io/websocket"
 )
 

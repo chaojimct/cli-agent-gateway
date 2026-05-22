@@ -6,8 +6,8 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/user/cursor-gateway/internal/agent"
-	"github.com/user/cursor-gateway/internal/cursor"
+	"github.com/chaojimct/cli-agent-gateway/internal/agent"
+	"github.com/chaojimct/cli-agent-gateway/internal/cursor"
 )
 
 var startTime = time.Now()

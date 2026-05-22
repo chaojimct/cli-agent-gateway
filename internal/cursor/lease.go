@@ -4,7 +4,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/user/cursor-gateway/internal/concurrency"
+	"github.com/chaojimct/cli-agent-gateway/internal/concurrency"
 )
 
 // slotLease releases a concurrency slot exactly once.

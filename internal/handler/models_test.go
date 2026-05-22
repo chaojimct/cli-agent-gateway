@@ -5,8 +5,8 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/user/cursor-gateway/internal/config"
-	"github.com/user/cursor-gateway/internal/cursor"
+	"github.com/chaojimct/cli-agent-gateway/internal/config"
+	"github.com/chaojimct/cli-agent-gateway/internal/cursor"
 )
 
 func TestModelsHandlerNotReady(t *testing.T) {

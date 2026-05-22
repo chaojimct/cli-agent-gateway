@@ -6,9 +6,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/user/cursor-gateway/internal/agent"
-	"github.com/user/cursor-gateway/internal/config"
-	"github.com/user/cursor-gateway/internal/session"
+	"github.com/chaojimct/cli-agent-gateway/internal/agent"
+	"github.com/chaojimct/cli-agent-gateway/internal/config"
+	"github.com/chaojimct/cli-agent-gateway/internal/session"
 )
 
 func TestGatewayUnknownAgent(t *testing.T) {

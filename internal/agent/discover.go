@@ -10,8 +10,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/user/cursor-gateway/internal/acp"
-	"github.com/user/cursor-gateway/internal/config"
+	"github.com/chaojimct/cli-agent-gateway/internal/acp"
+	"github.com/chaojimct/cli-agent-gateway/internal/config"
 )
 
 const (

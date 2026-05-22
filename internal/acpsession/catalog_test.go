@@ -3,7 +3,7 @@ package acpsession
 import (
 	"testing"
 
-	"github.com/user/cursor-gateway/internal/acp"
+	"github.com/chaojimct/cli-agent-gateway/internal/acp"
 )
 
 func TestBuildModelCatalogFromConfigOptions(t *testing.T) {

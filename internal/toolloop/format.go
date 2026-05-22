@@ -3,7 +3,7 @@ package toolloop
 import (
 	"encoding/json"
 
-	"github.com/user/cursor-gateway/internal/ir"
+	"github.com/chaojimct/cli-agent-gateway/internal/ir"
 )
 
 type openAIToolCallJSON struct {

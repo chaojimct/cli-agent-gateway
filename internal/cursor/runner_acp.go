@@ -6,11 +6,11 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/user/cursor-gateway/internal/agent"
-	"github.com/user/cursor-gateway/internal/config"
-	"github.com/user/cursor-gateway/internal/ir"
-	"github.com/user/cursor-gateway/internal/runner"
-	"github.com/user/cursor-gateway/internal/session"
+	"github.com/chaojimct/cli-agent-gateway/internal/agent"
+	"github.com/chaojimct/cli-agent-gateway/internal/config"
+	"github.com/chaojimct/cli-agent-gateway/internal/ir"
+	"github.com/chaojimct/cli-agent-gateway/internal/runner"
+	"github.com/chaojimct/cli-agent-gateway/internal/session"
 )
 
 // Runner v2: multi-agent ACP backend.

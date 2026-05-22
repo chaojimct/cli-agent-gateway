@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/user/cursor-gateway/internal/ir"
+	"github.com/chaojimct/cli-agent-gateway/internal/ir"
 )
 
 func TestTranslateToolCall(t *testing.T) {

@@ -1,6 +1,6 @@
 {
   "en": {
-    "title": "Cursor Gateway",
+    "title": "CLI Agent Gateway",
     "stats_turns": "Turns",
     "stats_tokens": "Total API tokens",
     "stats_time": "Time",
@@ -85,7 +85,7 @@
     "diff_select_auto": "Auto"
   },
   "zh-CN": {
-    "title": "Cursor Gateway",
+    "title": "CLI Agent Gateway",
     "stats_turns": "轮次",
     "stats_tokens": "累计 API Token",
     "stats_time": "耗时",
@@ -170,7 +170,7 @@
     "diff_select_auto": "自动"
   },
   "ja": {
-    "title": "Cursor Gateway",
+    "title": "CLI Agent Gateway",
     "stats_turns": "ターン",
     "stats_tokens": "累計APIトークン",
     "stats_time": "時間",
@@ -255,7 +255,7 @@
     "diff_select_auto": "自動"
   },
   "ko": {
-    "title": "Cursor Gateway",
+    "title": "CLI Agent Gateway",
     "stats_turns": "턴",
     "stats_tokens": "누적 API 토큰",
     "stats_time": "시간",
@@ -340,7 +340,7 @@
     "diff_select_auto": "자동"
   },
   "fr": {
-    "title": "Cursor Gateway",
+    "title": "CLI Agent Gateway",
     "stats_turns": "Tours",
     "stats_tokens": "Tokens API cumulés",
     "stats_time": "Durée",
@@ -425,7 +425,7 @@
     "diff_select_auto": "Auto"
   },
   "ar": {
-    "title": "Cursor Gateway",
+    "title": "CLI Agent Gateway",
     "stats_turns": "الأدوار",
     "stats_tokens": "إجمالي رموز API",
     "stats_time": "المدة",
@@ -510,7 +510,7 @@
     "diff_select_auto": "تلقائي"
   },
   "de": {
-    "title": "Cursor Gateway",
+    "title": "CLI Agent Gateway",
     "stats_turns": "Runden",
     "stats_tokens": "API-Token gesamt",
     "stats_time": "Dauer",
@@ -595,7 +595,7 @@
     "diff_select_auto": "Auto"
   },
   "ru": {
-    "title": "Cursor Gateway",
+    "title": "CLI Agent Gateway",
     "stats_turns": "Ходы",
     "stats_tokens": "Всего API-токенов",
     "stats_time": "Время",

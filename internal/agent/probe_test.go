@@ -3,7 +3,7 @@ package agent
 import (
 	"testing"
 
-	"github.com/user/cursor-gateway/internal/acp"
+	"github.com/chaojimct/cli-agent-gateway/internal/acp"
 )
 
 func TestValidateProbeRejectsCursorLoginForClaude(t *testing.T) {

@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/user/cursor-gateway/internal/config"
+	"github.com/chaojimct/cli-agent-gateway/internal/config"
 )
 
 // ListModelsCLI runs agent-specific model listing when supported.

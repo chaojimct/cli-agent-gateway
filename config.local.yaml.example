@@ -1,51 +1,47 @@
-# 复制为 config.local.yaml 后生效（已加入 .gitignore，不会提交）
-# 加载顺序：config.yaml → config.local.yaml（同键后者覆盖）
-
-# logging:
-#   level: debug
-#   format: text
-
-# server:
-#   port: 8080
-
-# auth:
-#   enabled: false
-#   api_key: ""
-
-cursor:
-  # 本机 cursor-agent 路径（按实际安装位置修改）
-  binary_path: C:\Users\chaoj\AppData\Local\cursor-agent\cursor-agent.cmd
-  # 本地代理（不需要则留空或删除）
-  proxy: http://127.0.0.1:10809
-  # default_model: composer-2.5-fast
-  # OpenCode 等带 tools 的请求走 client_tools_agent_mode，不是 agent_mode
-  client_tools_agent_mode: plan
-  # workspace: C:\path\to\your\project
-
-# agents:
-#   auto_discover: true
-#   default: cursor
-#   model_cache_ttl: 5m
-#   profiles:
-#     claude:
-#       enabled: true
-#       # 默认 npx 拉 @agentclientprotocol/claude-agent-acp；本地 Claude Code 已登录则无需配 API Key
-#       spawn:
-#         command: npx
-#         args: ["-y", "@agentclientprotocol/claude-agent-acp"]
-#       probe:
-#         reject_auth_methods: [cursor_login]
-#       models:
-#         source: session_new
-#     kimi:
-#       enabled: true
-#       prefix: kimi
-#       spawn:
-#         command: kimi-cli
-#         args: ["acp"]
-#       models:
-#         source: session_new
-
-# webui:
-#   store_request_body: true
-#   max_traces: 2000
+# Copy to config.local.yaml (gitignored). Overrides config.yaml keys.
+
+# logging:
+#   level: debug
+#   format: text
+
+# server:
+#   port: 8080
+
+# auth:
+#   enabled: false
+#   api_key: ""
+
+cursor:
+  binary_path: cursor-agent          # Windows: cursor-agent.cmd or full path
+  # proxy: http://127.0.0.1:7890
+  default_model: cursor/composer-2.5-fast
+  # OpenCode tool requests use client_tools_agent_mode, not agent_mode
+  client_tools_agent_mode: plan
+  # workspace: /path/to/project
+
+# agents:
+#   auto_discover: true
+#   default: cursor
+#   model_cache_ttl: 5m
+#   profiles:
+#     claude:
+#       enabled: true
+#       spawn:
+#         command: npx
+#         args: ["-y", "@agentclientprotocol/claude-agent-acp"]
+#       probe:
+#         reject_auth_methods: [cursor_login]
+#       models:
+#         source: session_new
+#     kimi:
+#       enabled: true
+#       prefix: kimi
+#       spawn:
+#         command: kimi-cli
+#         args: ["acp"]
+#       models:
+#         source: session_new
+
+# webui:
+#   store_request_body: true
+#   max_traces: 2000

@@ -1,6 +1,6 @@
 package agent
 
-import "github.com/user/cursor-gateway/internal/config"
+import "github.com/chaojimct/cli-agent-gateway/internal/config"
 
 // ProxyEnv returns proxy-related environment variables for child processes.
 func ProxyEnv(cfg *config.CursorConfig) []string {

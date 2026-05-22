@@ -3,7 +3,7 @@ package agent
 import (
 	"strings"
 
-	"github.com/user/cursor-gateway/internal/acp"
+	"github.com/chaojimct/cli-agent-gateway/internal/acp"
 )
 
 // ValidateProbe checks initialize result against profile probe rules.

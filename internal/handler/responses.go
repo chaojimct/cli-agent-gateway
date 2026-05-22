@@ -5,9 +5,9 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/user/cursor-gateway/internal/cursor"
-	"github.com/user/cursor-gateway/internal/translator"
-	"github.com/user/cursor-gateway/internal/webui"
+	"github.com/chaojimct/cli-agent-gateway/internal/cursor"
+	"github.com/chaojimct/cli-agent-gateway/internal/translator"
+	"github.com/chaojimct/cli-agent-gateway/internal/webui"
 )
 
 type ResponsesHandler struct {

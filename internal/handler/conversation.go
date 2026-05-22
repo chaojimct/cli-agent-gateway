@@ -7,8 +7,8 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/user/cursor-gateway/internal/cursor"
-	"github.com/user/cursor-gateway/internal/translator"
+	"github.com/chaojimct/cli-agent-gateway/internal/cursor"
+	"github.com/chaojimct/cli-agent-gateway/internal/translator"
 )
 
 // ConversationResolve holds the resolved conversation key and how it was chosen.

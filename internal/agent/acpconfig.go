@@ -3,9 +3,9 @@ package agent
 import (
 	"log/slog"
 
-	"github.com/user/cursor-gateway/internal/acp"
-	"github.com/user/cursor-gateway/internal/config"
-	"github.com/user/cursor-gateway/internal/workspace"
+	"github.com/chaojimct/cli-agent-gateway/internal/acp"
+	"github.com/chaojimct/cli-agent-gateway/internal/config"
+	"github.com/chaojimct/cli-agent-gateway/internal/workspace"
 )
 
 // ACPConfig builds acp.Client spawn settings for a profile.

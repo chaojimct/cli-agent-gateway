@@ -1,4 +1,4 @@
-module github.com/user/cursor-gateway
+module github.com/chaojimct/cli-agent-gateway
 
 go 1.23
 

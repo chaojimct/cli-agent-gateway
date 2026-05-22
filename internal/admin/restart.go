@@ -9,8 +9,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/user/cursor-gateway/internal/config"
-	"github.com/user/cursor-gateway/internal/cursor"
+	"github.com/chaojimct/cli-agent-gateway/internal/config"
+	"github.com/chaojimct/cli-agent-gateway/internal/cursor"
 )
 
 // Coordinator handles graceful shutdown and process restart.

@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/user/cursor-gateway/internal/cursor"
+	"github.com/chaojimct/cli-agent-gateway/internal/cursor"
 )
 
 // HealthHandler handles GET /healthz.

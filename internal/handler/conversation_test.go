@@ -3,7 +3,7 @@ package handler
 import (
 	"testing"
 
-	"github.com/user/cursor-gateway/internal/translator"
+	"github.com/chaojimct/cli-agent-gateway/internal/translator"
 )
 
 func TestDeriveConversationIDStable(t *testing.T) {

@@ -2,13 +2,13 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "go: build cursor-gateway",
+      "label": "go: build cli-agent-gateway",
       "type": "shell",
       "command": "go",
       "args": [
         "build",
         "-o",
-        "bin/cursor-gateway.exe",
+        "bin/cli-agent-gateway.exe",
         "./cmd/server"
       ],
       "options": {

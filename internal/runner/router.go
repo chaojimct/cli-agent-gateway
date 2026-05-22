@@ -8,10 +8,10 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/user/cursor-gateway/internal/agent"
-	"github.com/user/cursor-gateway/internal/concurrency"
-	"github.com/user/cursor-gateway/internal/config"
-	"github.com/user/cursor-gateway/internal/session"
+	"github.com/chaojimct/cli-agent-gateway/internal/agent"
+	"github.com/chaojimct/cli-agent-gateway/internal/concurrency"
+	"github.com/chaojimct/cli-agent-gateway/internal/config"
+	"github.com/chaojimct/cli-agent-gateway/internal/session"
 )
 
 var agentRequestCounts sync.Map // agentID -> *atomic.Uint64

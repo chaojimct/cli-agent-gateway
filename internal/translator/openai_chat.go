@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/user/cursor-gateway/internal/cursor"
+	"github.com/chaojimct/cli-agent-gateway/internal/cursor"
 )
 
 // OpenAIChatRequest represents an OpenAI Chat Completions request.

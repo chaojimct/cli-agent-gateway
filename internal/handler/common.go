@@ -10,10 +10,10 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/user/cursor-gateway/internal/config"
-	"github.com/user/cursor-gateway/internal/cursor"
-	"github.com/user/cursor-gateway/internal/agent"
-	"github.com/user/cursor-gateway/internal/webui"
+	"github.com/chaojimct/cli-agent-gateway/internal/config"
+	"github.com/chaojimct/cli-agent-gateway/internal/cursor"
+	"github.com/chaojimct/cli-agent-gateway/internal/agent"
+	"github.com/chaojimct/cli-agent-gateway/internal/webui"
 )
 
 func generateShortID() string {

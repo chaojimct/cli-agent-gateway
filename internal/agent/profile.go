@@ -4,7 +4,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/user/cursor-gateway/internal/acp"
+	"github.com/chaojimct/cli-agent-gateway/internal/acp"
 )
 
 // Profile describes how to spawn and talk to one ACP agent.

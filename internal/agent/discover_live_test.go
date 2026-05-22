@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/user/cursor-gateway/internal/config"
+	"github.com/chaojimct/cli-agent-gateway/internal/config"
 )
 
 func TestDiscoverClaudeBridgeLive(t *testing.T) {

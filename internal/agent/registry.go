@@ -7,7 +7,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/user/cursor-gateway/internal/config"
+	"github.com/chaojimct/cli-agent-gateway/internal/config"
 )
 
 // ModelEntry is one prefixed model for GET /v1/models.

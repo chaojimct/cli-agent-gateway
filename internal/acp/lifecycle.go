@@ -20,7 +20,7 @@ func (c *Client) bootstrap(ctx context.Context) (*InitializeResult, error) {
 	raw, err := c.Request(ctx, "initialize", InitializeParams{
 		ProtocolVersion: 1,
 		ClientInfo: ClientInfo{
-			Name:    "cursor-gateway",
+			Name:    "cli-agent-gateway",
 			Version: "2.0.0",
 		},
 		ClientCapabilities: ClientCapabilities{

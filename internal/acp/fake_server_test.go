@@ -10,7 +10,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/user/cursor-gateway/internal/acp"
+	"github.com/chaojimct/cli-agent-gateway/internal/acp"
 )
 
 // fakeACPStdinServer mimics cursor-api-proxy fake-acp-server for integration tests.

@@ -6,7 +6,7 @@ $failed = 0
 function Pass($msg) { Write-Host "[OK] $msg" -ForegroundColor Green }
 function Fail($msg) { Write-Host "[FAIL] $msg" -ForegroundColor Red; $script:failed++ }
 
-Write-Host "`n=== Cursor Gateway Smoke Test ===" -ForegroundColor Cyan
+Write-Host "`n=== CLI Agent Gateway Smoke Test ===" -ForegroundColor Cyan
 
 # 1. Health & status
 try {

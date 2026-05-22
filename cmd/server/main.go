@@ -12,12 +12,12 @@ import (
 	"syscall"
 
 	"github.com/go-chi/chi/v5"
-	"github.com/user/cursor-gateway/internal/admin"
-	"github.com/user/cursor-gateway/internal/config"
-	"github.com/user/cursor-gateway/internal/cursor"
-	"github.com/user/cursor-gateway/internal/handler"
-	"github.com/user/cursor-gateway/internal/middleware"
-	"github.com/user/cursor-gateway/internal/webui"
+	"github.com/chaojimct/cli-agent-gateway/internal/admin"
+	"github.com/chaojimct/cli-agent-gateway/internal/config"
+	"github.com/chaojimct/cli-agent-gateway/internal/cursor"
+	"github.com/chaojimct/cli-agent-gateway/internal/handler"
+	"github.com/chaojimct/cli-agent-gateway/internal/middleware"
+	"github.com/chaojimct/cli-agent-gateway/internal/webui"
 )
 
 var version = "dev"
@@ -28,7 +28,7 @@ func main() {
 	flag.Parse()
 
 	if *showVersion {
-		fmt.Printf("cursor-gateway %s\n", version)
+		fmt.Printf("cli-agent-gateway %s\n", version)
 		os.Exit(0)
 	}
 
@@ -155,7 +155,7 @@ func main() {
 	srv.Handler = r
 
 	go func() {
-		logger.Info("starting cursor-gateway",
+		logger.Info("starting cli-agent-gateway",
 			"version", version,
 			"addr", cfg.Addr(),
 			"profile", cfg.Cursor.AgentProfile,

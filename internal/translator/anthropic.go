@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	"github.com/google/uuid"
-	"github.com/user/cursor-gateway/internal/cursor"
+	"github.com/chaojimct/cli-agent-gateway/internal/cursor"
 )
 
 // AnthropicRequest represents an Anthropic Messages API request.

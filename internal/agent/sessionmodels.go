@@ -3,10 +3,10 @@ package agent
 import (
 	"context"
 
-	"github.com/user/cursor-gateway/internal/acp"
-	"github.com/user/cursor-gateway/internal/acpsession"
-	"github.com/user/cursor-gateway/internal/config"
-	"github.com/user/cursor-gateway/internal/workspace"
+	"github.com/chaojimct/cli-agent-gateway/internal/acp"
+	"github.com/chaojimct/cli-agent-gateway/internal/acpsession"
+	"github.com/chaojimct/cli-agent-gateway/internal/config"
+	"github.com/chaojimct/cli-agent-gateway/internal/workspace"
 )
 
 // FetchModelsFromSession probes session/new for available models.

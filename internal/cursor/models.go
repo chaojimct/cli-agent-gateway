@@ -1,7 +1,7 @@
 package cursor
 
 import (
-	"github.com/user/cursor-gateway/internal/agent"
+	"github.com/chaojimct/cli-agent-gateway/internal/agent"
 )
 var modelMap = map[string]string{
 	// OpenAI-style names

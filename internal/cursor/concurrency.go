@@ -1,6 +1,6 @@
 package cursor
 
-import "github.com/user/cursor-gateway/internal/concurrency"
+import "github.com/chaojimct/cli-agent-gateway/internal/concurrency"
 
 // ConcurrencyStats is kept for backward-compatible JSON/API types.
 type ConcurrencyStats = concurrency.Stats

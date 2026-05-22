@@ -3,8 +3,8 @@ package cursor
 import (
 	"errors"
 
-	"github.com/user/cursor-gateway/internal/config"
-	"github.com/user/cursor-gateway/internal/workspace"
+	"github.com/chaojimct/cli-agent-gateway/internal/config"
+	"github.com/chaojimct/cli-agent-gateway/internal/workspace"
 )
 
 // ErrModelOnlyToolUse is returned when tool_call is blocked in model profile.

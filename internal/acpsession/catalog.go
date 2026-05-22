@@ -3,7 +3,7 @@ package acpsession
 import (
 	"strings"
 
-	"github.com/user/cursor-gateway/internal/acp"
+	"github.com/chaojimct/cli-agent-gateway/internal/acp"
 )
 
 // CatalogEntry is one selectable model from session/new.

@@ -3,7 +3,7 @@ package runner
 import (
 	"sync/atomic"
 
-	"github.com/user/cursor-gateway/internal/ir"
+	"github.com/chaojimct/cli-agent-gateway/internal/ir"
 )
 
 // CancelReason explains why a turn was cancelled.

@@ -4,13 +4,13 @@ import (
 	"log/slog"
 	"time"
 
-	"github.com/user/cursor-gateway/internal/config"
-	"github.com/user/cursor-gateway/internal/cursor"
-	"github.com/user/cursor-gateway/internal/ir"
-	"github.com/user/cursor-gateway/internal/runner"
-	"github.com/user/cursor-gateway/internal/toolloop"
-	"github.com/user/cursor-gateway/internal/translator"
-	"github.com/user/cursor-gateway/internal/webui"
+	"github.com/chaojimct/cli-agent-gateway/internal/config"
+	"github.com/chaojimct/cli-agent-gateway/internal/cursor"
+	"github.com/chaojimct/cli-agent-gateway/internal/ir"
+	"github.com/chaojimct/cli-agent-gateway/internal/runner"
+	"github.com/chaojimct/cli-agent-gateway/internal/toolloop"
+	"github.com/chaojimct/cli-agent-gateway/internal/translator"
+	"github.com/chaojimct/cli-agent-gateway/internal/webui"
 )
 
 // ClientToolsState shares client-tool metadata between stream processing and the sink.

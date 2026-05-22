@@ -1,4 +1,4 @@
-BINARY=cursor-gateway.exe
+BINARY=cli-agent-gateway.exe
 VERSION=$(shell git describe --tags --always --dirty 2>/dev/null || echo "dev")
 
 .PHONY: build run test clean web

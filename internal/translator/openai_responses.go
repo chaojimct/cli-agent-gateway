@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	"github.com/google/uuid"
-	"github.com/user/cursor-gateway/internal/cursor"
+	"github.com/chaojimct/cli-agent-gateway/internal/cursor"
 )
 
 // ResponsesRequest represents an OpenAI Responses API request.

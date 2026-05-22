@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/user/cursor-gateway/internal/cursor"
+	"github.com/chaojimct/cli-agent-gateway/internal/cursor"
 )
 
 // ModelsHandler handles GET /v1/models.

@@ -1,6 +1,6 @@
 package toolloop
 
-import "github.com/user/cursor-gateway/internal/acp"
+import "github.com/chaojimct/cli-agent-gateway/internal/acp"
 
 // Profile determines permission and streaming behavior.
 type Profile string

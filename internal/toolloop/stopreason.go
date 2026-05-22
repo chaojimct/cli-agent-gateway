@@ -1,6 +1,6 @@
 package toolloop
 
-import "github.com/user/cursor-gateway/internal/acp"
+import "github.com/chaojimct/cli-agent-gateway/internal/acp"
 
 func StopReasonFromString(s string) acp.StopReason {
 	switch s {

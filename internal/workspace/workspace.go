@@ -4,7 +4,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/user/cursor-gateway/internal/config"
+	"github.com/chaojimct/cli-agent-gateway/internal/config"
 )
 
 // Effective returns the workspace directory for cursor-agent.
@@ -32,11 +32,11 @@ func EnsureModelSandbox(cfg *config.CursorConfig) string {
 	}
 	home, err := os.UserHomeDir()
 	if err != nil {
-		dir := filepath.Join(os.TempDir(), "cursor-gateway-model-sandbox")
+		dir := filepath.Join(os.TempDir(), "cli-agent-gateway-model-sandbox")
 		_ = os.MkdirAll(dir, 0700)
 		return dir
 	}
-	dir := filepath.Join(home, ".cursor-gateway", "model-sandbox")
+	dir := filepath.Join(home, ".cli-agent-gateway", "model-sandbox")
 	_ = os.MkdirAll(dir, 0700)
 	return dir
 }

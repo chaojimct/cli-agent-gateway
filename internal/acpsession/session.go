@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"log/slog"
 
-	"github.com/user/cursor-gateway/internal/acp"
+	"github.com/chaojimct/cli-agent-gateway/internal/acp"
 )
 
 // ProfileConfig supplies agent-specific session config behavior.
