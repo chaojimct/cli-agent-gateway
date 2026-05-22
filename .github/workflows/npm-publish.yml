@@ -17,16 +17,31 @@ jobs:
   publish:
     name: Publish to npm
     runs-on: ubuntu-latest
+    env:
+      NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
     defaults:
       run:
         working-directory: packages/cli-agent-gateway
     steps:
       - uses: actions/checkout@v4
 
+      - name: Verify NPM_TOKEN secret
+        shell: bash
+        run: |
+          if [ -z "$NODE_AUTH_TOKEN" ]; then
+            echo "::error::Repository secret NPM_TOKEN is missing or empty."
+            echo "Fix: GitHub repo → Settings → Secrets and variables → Actions"
+            echo "      → New repository secret → Name: NPM_TOKEN"
+            echo "      → Value: npm Automation token (Publish permission)"
+            exit 1
+          fi
+          echo "NPM_TOKEN is set (${#NODE_AUTH_TOKEN} chars)"
+
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
           registry-url: https://registry.npmjs.org
+          always-auth: true
 
       - name: Sync package version
         shell: bash
@@ -42,7 +57,5 @@ jobs:
           fi
           npm version "$VER" --no-git-tag-version --allow-same-version
 
-      - name: Publish
+      - name: Publish to npm
         run: npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

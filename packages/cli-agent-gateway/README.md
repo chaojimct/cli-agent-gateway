@@ -52,7 +52,20 @@ npm 启动器会自动传入 `-config`：
 
 ## 发布（维护者）
 
-npm 版本需与 GitHub Release 标签一致（`package.json` 的 `0.1.1` 对应 tag `v0.1.1`）。推送 `v*` 标签后 CI 会构建 Release；配置 `NPM_TOKEN` 后 `npm-publish` workflow 会发布本包。
+### 配置 GitHub Secret（首次必做）
+
+CI 报错 `ENEEDAUTH` 表示 **未配置或配错了 `NPM_TOKEN`**。
+
+1. 打开 https://www.npmjs.com → 头像 → **Access Tokens** → **Generate New Token**
+2. 类型选 **Granular Access Token** 或 **Automation**（账号开了 2FA 时必须用 **Automation**）
+3. 权限：**Read and write**，范围勾选包 `cli-agent-gateway`（或 All packages）
+4. 复制 token（只显示一次）
+5. GitHub 仓库 → **Settings** → **Secrets and variables** → **Actions** → **New repository secret**
+   - Name 必须为：`NPM_TOKEN`（大小写一致）
+   - Value：粘贴 npm token
+6. Actions → **npm-publish** → **Run workflow**（version 填 `0.1.2`）
+
+npm 版本需与 GitHub Release 标签一致（如 `0.1.2` ↔ `v0.1.2`）。
 
 本地打包检查：
 
