@@ -133,6 +133,8 @@ jobs:
 
             HTTP gateway for CLI coding agents (Cursor, Claude Code, Kimi, …) via ACP.
 
+            📖 **[Usage Guide](https://github.com/chaojimct/cli-agent-gateway/blob/main/docs/guide.md)** · [中文指南](https://github.com/chaojimct/cli-agent-gateway/blob/main/docs/guide.zh-CN.md) · [CHANGELOG](https://github.com/chaojimct/cli-agent-gateway/blob/main/CHANGELOG.md)
+
             ### Downloads
 
             | Platform | File |
