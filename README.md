@@ -38,15 +38,26 @@ Route **OpenAI Chat**, **Anthropic Messages**, **OpenAI Responses**, and **Gemin
 4. Run:
 
 ```bash
-./cli-agent-gateway -config config.yaml
-# Windows: cli-agent-gateway.exe -config config.yaml
+./cli-agent-gateway
+# Windows: cli-agent-gateway.exe
+# Config: ./config.yaml if present, else ~/.config/cli-agent-gateway/ (auto-init)
 ```
 
 5. Test: `curl http://127.0.0.1:8080/healthz` · Web UI: http://127.0.0.1:8080/
 
 See the [**Usage Guide**](docs/guide.md) for full setup, multi-agent config, and client examples.
 
-### Option B — Build from source
+### Option B — npm (Node 18+)
+
+```bash
+npm install -g cli-agent-gateway
+cli-agent-gateway init
+cli-agent-gateway
+```
+
+Or `npx cli-agent-gateway`. Postinstall downloads the platform binary from GitHub Releases (npm version must match a published release). See [packages/cli-agent-gateway/README.md](packages/cli-agent-gateway/README.md).
+
+### Option C — Build from source
 
 ```bash
 git clone https://github.com/chaojimct/cli-agent-gateway.git

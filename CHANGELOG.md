@@ -15,6 +15,20 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
+## [0.1.2] - 2026-05-22
+
+### Added
+- **npm package** — `cli-agent-gateway` on npm; postinstall downloads platform binary from GitHub Releases
+- **Config resolution** — Prefer `./config.yaml` in cwd, else auto-init user config dir (`~/.config/cli-agent-gateway` or `%AppData%\cli-agent-gateway`)
+- **CLI subcommands** — `init`, `doctor` on the Go binary
+
+### Changed
+- Default startup no longer requires `-config` when user or project config is discoverable
+
+[0.1.2]: https://github.com/chaojimct/cli-agent-gateway/releases/tag/v0.1.2
+
+---
+
 ## [0.1.1] - 2026-05-22
 
 First public release.
@@ -40,6 +54,12 @@ First public release.
 ---
 
 ## 简体中文摘要
+
+### [0.1.2] - 2026-05-22
+
+- npm 安装：`npm install -g cli-agent-gateway`
+- 配置：当前目录 `config.yaml` 优先，否则自动初始化用户配置目录
+- `init` / `doctor` 子命令
 
 ### [0.1.1] - 2026-05-22 · 初始版本
 

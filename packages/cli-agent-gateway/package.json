@@ -1,0 +1,41 @@
+{
+  "name": "cli-agent-gateway",
+  "version": "0.1.2",
+  "description": "HTTP gateway for CLI coding agents (Cursor, Claude, Kimi) via ACP",
+  "homepage": "https://github.com/chaojimct/cli-agent-gateway",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chaojimct/cli-agent-gateway.git",
+    "directory": "packages/cli-agent-gateway"
+  },
+  "bugs": {
+    "url": "https://github.com/chaojimct/cli-agent-gateway/issues"
+  },
+  "license": "MIT",
+  "author": "chaojimct",
+  "keywords": [
+    "cursor",
+    "acp",
+    "openai",
+    "anthropic",
+    "agent",
+    "gateway",
+    "cli"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "bin": {
+    "cli-agent-gateway": "bin/cli-agent-gateway.js",
+    "cag": "bin/cli-agent-gateway.js"
+  },
+  "scripts": {
+    "postinstall": "node scripts/postinstall.js"
+  },
+  "files": [
+    "bin",
+    "lib",
+    "scripts",
+    "README.md"
+  ]
+}

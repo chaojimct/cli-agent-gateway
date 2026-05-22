@@ -5,7 +5,7 @@ LDFLAGS=-s -w -X main.version=$(VERSION)
 # Cross-compilation targets (linux/darwin: no .exe; windows: .exe)
 PLATFORMS=linux/amd64 linux/arm64 windows/amd64 windows/arm64 darwin/amd64 darwin/arm64
 
-.PHONY: build run test clean web build-all
+.PHONY: build run test clean web build-all npm-pack
 
 web:
 	@echo "Web UI is embedded from internal/webui/static/index.html"
@@ -43,3 +43,6 @@ install:
 deps:
 	go mod tidy
 	go mod download
+
+npm-pack:
+	cd packages/cli-agent-gateway && npm pack

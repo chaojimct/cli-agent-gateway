@@ -1,5 +1,7 @@
-bin/
+/bin/
 *.exe
+packages/cli-agent-gateway/vendor/
+packages/cli-agent-gateway/*.tgz
 sessions.json
 sessions.json.lock
 config.local.yaml

@@ -23,7 +23,18 @@ import (
 var version = "dev"
 
 func main() {
-	configPath := flag.String("config", "config.yaml", "path to config file")
+	if len(os.Args) > 1 {
+		switch os.Args[1] {
+		case "init":
+			runInit()
+			return
+		case "doctor":
+			runDoctor()
+			return
+		}
+	}
+
+	configFlag := flag.String("config", config.DefaultConfigFileName, "config file path (default: ./config.yaml if present, else user config dir)")
 	showVersion := flag.Bool("version", false, "show version")
 	flag.Parse()
 
@@ -32,7 +43,13 @@ func main() {
 		os.Exit(0)
 	}
 
-	cfg, err := config.Load(*configPath)
+	configPath, err := config.ResolveConfigPath(*configFlag)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "failed to resolve config path: %v\n", err)
+		os.Exit(1)
+	}
+
+	cfg, err := config.Load(configPath)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "failed to load config: %v\n", err)
 		os.Exit(1)
@@ -69,7 +86,7 @@ func main() {
 	authEnabled.Store(cfg.Auth.Enabled)
 	authKey.Store(cfg.Auth.APIKey)
 
-	cfgMgr := config.NewManager(cfg, *configPath, func(c *config.Config) {
+	cfgMgr := config.NewManager(cfg, configPath, func(c *config.Config) {
 		runner.UpdateConfig(c, c.Cursor.RequestTimeout)
 		authEnabled.Store(c.Auth.Enabled)
 		if c.Auth.APIKey != "" {
@@ -111,7 +128,7 @@ func main() {
 		sessionFlush = sessionMgr.Flush
 	}
 
-	restartCoord := admin.NewCoordinator(srv, runner, sessionFlush, cfg.Admin.RestartGrace, logger, *configPath)
+	restartCoord := admin.NewCoordinator(srv, runner, sessionFlush, cfg.Admin.RestartGrace, logger, configPath)
 
 	webuiHandler.SetAPIDeps(webui.APIDeps{
 		ConfigMgr:         cfgMgr,
@@ -158,6 +175,7 @@ func main() {
 		logger.Info("starting cli-agent-gateway",
 			"version", version,
 			"addr", cfg.Addr(),
+			"config", configPath,
 			"profile", cfg.Cursor.AgentProfile,
 		)
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {

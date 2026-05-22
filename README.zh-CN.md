@@ -31,21 +31,31 @@
 
 ### 方式 A — 下载 Release（推荐）
 
-1. 从 **[Releases](https://github.com/chaojimct/cli-agent-gateway/releases)** 下载最新版（当前 **v0.1.1**）
+1. 从 **[Releases](https://github.com/chaojimct/cli-agent-gateway/releases)** 下载最新版（当前 **v0.1.2**）
 2. 解压对应平台压缩包
 3. 设置 `CURSOR_API_KEY`（或先运行 `cursor-agent` 完成登录）
 4. 启动：
 
 ```bash
-cli-agent-gateway.exe -config config.yaml   # Windows
-./cli-agent-gateway -config config.yaml      # Linux/macOS
+cli-agent-gateway.exe    # Windows（自动：当前目录 config.yaml，否则用户配置目录）
+./cli-agent-gateway      # Linux/macOS
 ```
 
 5. 验证：`curl http://127.0.0.1:8080/healthz` · Web UI：http://127.0.0.1:8080/
 
 完整步骤见 [**使用指南**](docs/guide.zh-CN.md)。
 
-### 方式 B — 源码编译
+### 方式 B — npm（Node 18+）
+
+```bash
+npm install -g cli-agent-gateway
+cli-agent-gateway init
+cli-agent-gateway
+```
+
+或：`npx cli-agent-gateway`。安装时会从 GitHub Release 拉取当前平台二进制；需已发布对应版本的 Release（与 npm 包版本一致）。详见 [packages/cli-agent-gateway/README.md](packages/cli-agent-gateway/README.md)。
+
+### 方式 C — 源码编译
 
 ```bash
 git clone https://github.com/chaojimct/cli-agent-gateway.git
@@ -134,7 +144,7 @@ make test        # 单元测试
 make build-all   # 本地交叉编译 → dist/
 ```
 
-推送 `v*` 标签自动发版（如 `v0.1.2`）。
+推送 `v*` 标签自动发版（如 `v0.1.2`）。发布 GitHub Release 后，若配置了仓库 Secret `NPM_TOKEN`，会同步发布 npm 包 `cli-agent-gateway`。
 
 ## 项目结构
 

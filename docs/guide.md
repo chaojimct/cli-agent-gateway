@@ -42,6 +42,22 @@ sha256sum -c SHA256SUMS.txt
 | macOS Intel | `*_darwin-amd64.tar.gz` | `cli-agent-gateway` |
 | macOS Apple Silicon | `*_darwin-arm64.tar.gz` | `cli-agent-gateway` |
 
+### From npm (Node 18+)
+
+```bash
+npm install -g cli-agent-gateway
+```
+
+Postinstall downloads the release binary matching the npm package version. For local development:
+
+```bash
+export CG_SKIP_BINARY_INSTALL=1
+export CG_BINARY_PATH=/path/to/bin/cli-agent-gateway
+npm install -g ./packages/cli-agent-gateway
+```
+
+See [packages/cli-agent-gateway/README.md](../packages/cli-agent-gateway/README.md).
+
 ### From source
 
 ```bash
@@ -100,9 +116,10 @@ cursor:
 ### 4. Start the gateway
 
 ```bash
-./cli-agent-gateway -config config.yaml
+./cli-agent-gateway
 # Windows:
-cli-agent-gateway.exe -config config.yaml
+cli-agent-gateway.exe
+# Optional: -config /path/to/config.yaml
 ```
 
 Expected log: `starting cli-agent-gateway` on `127.0.0.1:8080`.
@@ -165,7 +182,15 @@ List models: `GET /v1/models` → `cursor/composer-2.5-fast`, `claude/sonnet`, e
 | `workspace` | Project root the agent operates in |
 | `max_concurrent: 8` | Max parallel ACP turns |
 
-Config load order: `config.yaml` → `config.local.yaml` → `CG_*` env vars.
+**Config file location** (when `-config` is omitted or the default `config.yaml`):
+
+1. `./config.yaml` in the current working directory if it exists (project or release folder)
+2. Otherwise the user config dir (created on first run with defaults):
+   - Linux/macOS: `~/.config/cli-agent-gateway/`
+   - Windows: `%AppData%\cli-agent-gateway\`
+   - Override with `CG_CONFIG_HOME`
+
+Merge order in that directory: `config.yaml` → `config.local.yaml` → `CG_*` env vars. User-dir `sessions.json` is stored as an absolute path on init.
 
 ---
 

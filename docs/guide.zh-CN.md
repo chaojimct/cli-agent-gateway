@@ -42,6 +42,22 @@ sha256sum -c SHA256SUMS.txt
 | macOS Intel | `*_darwin-amd64.tar.gz` | `cli-agent-gateway` |
 | macOS Apple Silicon | `*_darwin-arm64.tar.gz` | `cli-agent-gateway` |
 
+### 从 npm 安装（Node 18+）
+
+```bash
+npm install -g cli-agent-gateway
+```
+
+安装脚本会从 GitHub Release 下载与 npm 包版本一致的平台二进制（如 `v0.1.1`）。开发时可跳过下载并使用本地构建：
+
+```bash
+set CG_SKIP_BINARY_INSTALL=1
+set CG_BINARY_PATH=C:\path\to\bin\cli-agent-gateway.exe
+npm install -g ./packages/cli-agent-gateway
+```
+
+详见 [packages/cli-agent-gateway/README.md](../packages/cli-agent-gateway/README.md)。
+
 ### 从源码编译
 
 ```bash
@@ -100,8 +116,9 @@ cursor:
 ### 4. 启动网关
 
 ```bash
-cli-agent-gateway.exe -config config.yaml   # Windows
-./cli-agent-gateway -config config.yaml     # Linux/macOS
+cli-agent-gateway.exe    # Windows：自动解析配置路径
+./cli-agent-gateway      # Linux/macOS
+# 也可显式指定：-config /path/to/config.yaml
 ```
 
 日志出现 `starting cli-agent-gateway`，默认监听 `127.0.0.1:8080`。
@@ -164,7 +181,15 @@ agents:
 | `workspace` | Agent 操作的项目根目录 |
 | `max_concurrent: 8` | 最大并发 ACP turn |
 
-配置加载顺序：`config.yaml` → `config.local.yaml` → `CG_*` 环境变量。
+**配置文件位置**（未指定 `-config` 或值为默认 `config.yaml` 时）：
+
+1. 当前工作目录下的 `config.yaml`（存在则优先，适合项目目录或 Release 解压目录）
+2. 否则使用用户配置目录（首次启动自动创建并写入默认文件）：
+   - Linux/macOS：`~/.config/cli-agent-gateway/`
+   - Windows：`%AppData%\cli-agent-gateway\`
+   - 可用 `CG_CONFIG_HOME` 覆盖整个目录路径
+
+同目录内加载顺序：`config.yaml` → `config.local.yaml` → `CG_*` 环境变量。用户目录下的 `sessions.json` 路径在初始化时写为绝对路径。
 
 ---
 
