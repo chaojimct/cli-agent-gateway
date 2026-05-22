@@ -194,7 +194,20 @@ Runtime config changes to `server.host/port`, `cursor.binary_path`, or `logging.
 make test              # unit tests
 make test-integration  # integration tests (build tag)
 make lint              # golangci-lint
+make build-all         # cross-compile all platforms locally → dist/
 ```
+
+### Prebuilt binaries
+
+GitHub Actions (`.github/workflows/build.yml`) cross-compiles for **6 platforms** on every push to `main` and PR:
+
+| Platform | Archive |
+|----------|---------|
+| Linux amd64 / arm64 | `.tar.gz` |
+| Windows amd64 / arm64 | `.zip` |
+| macOS amd64 / arm64 | `.tar.gz` |
+
+Download from the **Actions** run → **Artifacts**. Push a `v*` tag (e.g. `v0.1.0`) to create a GitHub Release with all archives attached.
 
 CI (`.github/workflows/ci.yml`) runs `go test ./...` on Ubuntu, Windows, and macOS.
 

@@ -194,7 +194,20 @@ Anthropic 还支持 `metadata.user_id`。未指定时，网关会从 system prom
 make test              # 单元测试
 make test-integration  # 集成测试（build tag）
 make lint              # golangci-lint
+make build-all         # 本地交叉编译全部平台 → dist/
 ```
+
+### 预编译二进制
+
+GitHub Actions（`.github/workflows/build.yml`）在每次 push 到 `main` 及 PR 时交叉编译 **6 个平台**：
+
+| 平台 | 压缩包 |
+|------|--------|
+| Linux amd64 / arm64 | `.tar.gz` |
+| Windows amd64 / arm64 | `.zip` |
+| macOS amd64 / arm64 | `.tar.gz` |
+
+在 **Actions** 运行记录 → **Artifacts** 中下载。推送 `v*` 标签（如 `v0.1.0`）会自动创建 GitHub Release 并附上全部压缩包。
 
 CI（`.github/workflows/ci.yml`）在 Ubuntu、Windows、macOS 上运行 `go test ./...`。
 

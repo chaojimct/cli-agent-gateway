@@ -1,0 +1,121 @@
+name: build
+
+on:
+  push:
+    branches: [main, master]
+    tags: ["v*"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  GO_VERSION: "1.23"
+  BINARY: cli-agent-gateway
+
+jobs:
+  build:
+    name: ${{ matrix.platform }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - goos: linux
+            goarch: amd64
+            platform: linux-amd64
+          - goos: linux
+            goarch: arm64
+            platform: linux-arm64
+          - goos: windows
+            goarch: amd64
+            platform: windows-amd64
+            ext: .exe
+          - goos: windows
+            goarch: arm64
+            platform: windows-arm64
+            ext: .exe
+          - goos: darwin
+            goarch: amd64
+            platform: darwin-amd64
+          - goos: darwin
+            goarch: arm64
+            platform: darwin-arm64
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache: true
+
+      - name: Resolve version
+        id: version
+        shell: bash
+        run: |
+          if [[ "${GITHUB_REF}" == refs/tags/v* ]]; then
+            VERSION="${GITHUB_REF#refs/tags/}"
+          elif TAG="$(git describe --tags --exact-match 2>/dev/null)"; then
+            VERSION="$TAG"
+          elif DESC="$(git describe --tags --always 2>/dev/null)"; then
+            VERSION="$DESC"
+          else
+            VERSION="dev-${GITHUB_SHA:0:7}"
+          fi
+          echo "value=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "Version: $VERSION"
+
+      - name: Build
+        env:
+          GOOS: ${{ matrix.goos }}
+          GOARCH: ${{ matrix.goarch }}
+          CGO_ENABLED: "0"
+        shell: bash
+        run: |
+          out="dist/${{ matrix.platform }}/${{ env.BINARY }}${{ matrix.ext }}"
+          mkdir -p "$(dirname "$out")"
+          go build -trimpath \
+            -ldflags="-s -w -X main.version=${{ steps.version.outputs.value }}" \
+            -o "$out" ./cmd/server
+          if [[ "${{ matrix.goos }}" != "windows" ]]; then
+            tar -C "dist/${{ matrix.platform }}" -czf "dist/${{ env.BINARY }}_${{ steps.version.outputs.value }}_${{ matrix.platform }}.tar.gz" "${{ env.BINARY }}${{ matrix.ext }}"
+          else
+            (cd "dist/${{ matrix.platform }}" && zip -9 "../${{ env.BINARY }}_${{ steps.version.outputs.value }}_${{ matrix.platform }}.zip" "${{ env.BINARY }}${{ matrix.ext }}")
+          fi
+
+      - name: Upload platform artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.BINARY }}-${{ matrix.platform }}
+          path: |
+            dist/${{ matrix.platform }}/${{ env.BINARY }}${{ matrix.ext }}
+            dist/${{ env.BINARY }}_${{ steps.version.outputs.value }}_${{ matrix.platform }}.*
+          if-no-files-found: error
+          retention-days: 30
+
+  release:
+    name: GitHub Release
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          pattern: ${{ env.BINARY }}-*
+          merge-multiple: true
+
+      - name: Flatten release assets
+        shell: bash
+        run: |
+          mkdir -p release
+          find dist -type f \( -name '*.tar.gz' -o -name '*.zip' \) -exec cp {} release/ \;
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: release/*
+          generate_release_notes: true
