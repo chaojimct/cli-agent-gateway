@@ -56,16 +56,21 @@ npm 启动器会自动传入 `-config`：
 
 CI 报错 `ENEEDAUTH` 表示 **未配置或配错了 `NPM_TOKEN`**。
 
-1. 打开 https://www.npmjs.com → 头像 → **Access Tokens** → **Generate New Token**
-2. 类型选 **Granular Access Token** 或 **Automation**（账号开了 2FA 时必须用 **Automation**）
-3. 权限：**Read and write**，范围勾选包 `cli-agent-gateway`（或 All packages）
-4. 复制 token（只显示一次）
-5. GitHub 仓库 → **Settings** → **Secrets and variables** → **Actions** → **New repository secret**
+1. 打开 https://www.npmjs.com → 右上角头像 → **Access Tokens** → **Generate New Token**
+2. 选 **Granular Access Token**（npm 新版已取消单独的 “Automation” 类型）
+3. **Packages**：勾选 `cli-agent-gateway`（或 All packages）
+4. **Permissions**：**Read and write**
+5. 若账号开了 2FA：勾选 **Bypass two-factor authentication**（CI 发布必须，否则 Actions 无法 publish）
+6. 设置过期时间 → **Generate Token** → 复制 token（只显示一次）
+7. GitHub 仓库 → **Settings** → **Secrets and variables** → **Actions** → **New repository secret**
    - Name 必须为：`NPM_TOKEN`（大小写一致）
    - Value：粘贴 npm token
-6. Actions → **npm-publish** → **Run workflow**（version 填 `0.1.2`）
 
-npm 版本需与 GitHub Release 标签一致（如 `0.1.2` ↔ `v0.1.2`）。
+配置好后：**每次推送 `v*` tag**，`build` 工作流会创建 GitHub Release，并在同一运行末尾 **`npm publish`**，无需单独点 Actions。
+
+npm 版本需与 Release tag 一致（如 `v0.1.3` → 包版本 `0.1.3`）。
+
+若二进制已就绪但只有一次 npm 失败，可用 Actions → **npm-publish-manual**，输入与 tag 一致的版本号做补救。
 
 本地打包检查：
 

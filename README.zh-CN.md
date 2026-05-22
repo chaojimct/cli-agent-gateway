@@ -144,7 +144,8 @@ make test        # 单元测试
 make build-all   # 本地交叉编译 → dist/
 ```
 
-推送 `v*` 标签自动发版（如 `v0.1.2`）。发布 GitHub Release 后，若配置了仓库 Secret `NPM_TOKEN`，会同步发布 npm 包 `cli-agent-gateway`。
+推送 `v*` 标签后：**build** workflow 会编译六端、创建 GitHub Release、并在同一流水线末尾自动 **npm publish**（需配置 Secret `NPM_TOKEN`）。无需再手动点 npm 工作流。
+若仅 npm 失败需补救，可在 Actions 中运行 **npm-publish-manual**（`workflow_dispatch`）。
 
 ## 项目结构
 

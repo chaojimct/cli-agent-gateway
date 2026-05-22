@@ -32,7 +32,7 @@ Route **OpenAI Chat**, **Anthropic Messages**, **OpenAI Responses**, and **Gemin
 
 ### Option A — Download release (recommended)
 
-1. Get the latest build from **[Releases](https://github.com/chaojimct/cli-agent-gateway/releases)** (currently **v0.1.1**)
+1. Get the latest build from **[Releases](https://github.com/chaojimct/cli-agent-gateway/releases)** (currently **v0.1.2**)
 2. Extract the archive for your OS/ARCH
 3. Set `CURSOR_API_KEY` (or log in via `cursor-agent` once)
 4. Run:
@@ -149,7 +149,9 @@ make test        # unit tests
 make build-all   # cross-compile locally → dist/
 ```
 
-Push a `v*` tag to trigger a new release (e.g. `v0.1.2`).
+Push a `v*` tag on `main` (e.g. `v0.1.3`) to publish a **[Release](https://github.com/chaojimct/cli-agent-gateway/releases)** with binaries. The **`build`** workflow then runs **`npm publish`** at the end of the same run (needs repository secret **`NPM_TOKEN`** configured). Users no longer need a separate Actions click for npm.
+
+If only npm failed while release assets succeeded, rerun from **npm-publish-manual** (workflow_dispatch) or fix the pipeline and bump/push a new tag as needed.
 
 ## Project Layout
 

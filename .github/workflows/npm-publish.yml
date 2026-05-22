@@ -1,13 +1,11 @@
-name: npm-publish
+name: npm-publish-manual
 
 on:
-  release:
-    types: [published]
   workflow_dispatch:
     inputs:
       version:
-        description: "npm version (e.g. 0.1.2), defaults to package.json"
-        required: false
+        description: "npm 版本（如 0.1.3），须与仓库 tag v* / GitHub Release 一致"
+        required: true
         type: string
 
 permissions:
@@ -15,7 +13,7 @@ permissions:
 
 jobs:
   publish:
-    name: Publish to npm
+    name: Publish to npm (manual)
     runs-on: ubuntu-latest
     env:
       NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -30,9 +28,7 @@ jobs:
         run: |
           if [ -z "$NODE_AUTH_TOKEN" ]; then
             echo "::error::Repository secret NPM_TOKEN is missing or empty."
-            echo "Fix: GitHub repo → Settings → Secrets and variables → Actions"
-            echo "      → New repository secret → Name: NPM_TOKEN"
-            echo "      → Value: npm Automation token (Publish permission)"
+            echo "Fix: GitHub repo → Settings → Secrets → Actions → NPM_TOKEN"
             exit 1
           fi
           echo "NPM_TOKEN is set (${#NODE_AUTH_TOKEN} chars)"
@@ -43,18 +39,11 @@ jobs:
           registry-url: https://registry.npmjs.org
           always-auth: true
 
-      - name: Sync package version
+      - name: Sync package version from input
         shell: bash
         run: |
-          if [ -n "${{ github.event.release.tag_name }}" ]; then
-            VER="${{ github.event.release.tag_name }}"
-            VER="${VER#v}"
-          elif [ -n "${{ inputs.version }}" ]; then
-            VER="${{ inputs.version }}"
-            VER="${VER#v}"
-          else
-            VER="$(node -p "require('./package.json').version")"
-          fi
+          VER="${{ inputs.version }}"
+          VER="${VER#v}"
           npm version "$VER" --no-git-tag-version --allow-same-version
 
       - name: Publish to npm
