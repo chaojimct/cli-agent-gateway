@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cursor Gateway</title>
+    <style>
+:root{--bg:#0d1117;--panel:#161b22;--border:#30363d;--text:#c9d1d9;--muted:#8b949e;--accent:#58a6ff;--ok:#3fb950;--err:#f85149}
+body.light{--bg:#f6f8fa;--panel:#fff;--border:#d0d7de;--text:#1f2328;--muted:#656d76;--accent:#0969da}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);height:100vh;display:flex;flex-direction:column}
+header{display:flex;align-items:center;gap:12px;padding:10px 16px;background:var(--panel);border-bottom:1px solid var(--border)}
+header h1{font-size:15px;flex:1}
+.tabs{display:flex;gap:4px}
+.tab{padding:6px 12px;border-radius:6px;cursor:pointer;font-size:13px;border:1px solid transparent}
+.tab.active{background:var(--accent);color:#fff}
+.toolbar{display:flex;gap:8px;align-items:center;font-size:12px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--ok)}
+.dot.off{background:var(--err)}
+main{flex:1;display:flex;overflow:hidden}
+.sidebar{width:320px;border-right:1px solid var(--border);display:flex;flex-direction:column;background:var(--panel)}
+.sidebar input,.sidebar select{width:calc(100% - 16px);padding:8px;margin:8px;border:1px solid var(--border);border-radius:6px;background:var(--bg);color:var(--text)}
+.trace-list{flex:1;overflow-y:auto;list-style:none}
+.trace-item{padding:10px 12px;border-bottom:1px solid var(--border);cursor:pointer;font-size:12px}
+.trace-item:hover,.trace-item.active{background:rgba(88,166,255,.12)}
+.trace-item.selected{outline:2px solid var(--accent)}
+.content{flex:1;overflow-y:auto;padding:16px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.stat{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:12px}
+.stat .l{font-size:10px;color:var(--muted);text-transform:uppercase}
+.stat .v{font-size:22px;font-weight:600;margin-top:4px}
+.panel{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:12px}
+.mono{font-family:ui-monospace,monospace;font-size:12px;white-space:pre-wrap;word-break:break-word}
+.text-box{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:12px;max-height:360px;overflow:auto}
+.diff-del{background:rgba(248,81,73,.2);text-decoration:line-through}
+.diff-add{background:rgba(63,185,80,.2)}
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+label{font-size:12px;color:var(--muted);display:block;margin:8px 0 4px}
+.config-form textarea{width:100%;padding:8px;border:1px solid var(--border);border-radius:6px;background:var(--bg);color:var(--text);font-size:13px;min-height:240px;font-family:monospace}
+.btn{padding:8px 14px;border-radius:6px;border:1px solid var(--border);background:var(--accent);color:#fff;cursor:pointer;font-size:13px;margin-right:8px;margin-bottom:4px}
+.btn.secondary{background:var(--panel);color:var(--text)}
+.hidden{display:none!important}
+.badge{font-size:10px;padding:2px 6px;border-radius:10px;margin-left:6px}
+.badge.ok{background:rgba(63,185,80,.2);color:var(--ok)}
+.badge.err{background:rgba(248,81,73,.2);color:var(--err)}
+    </style>
+</head>
+<body>
+<header>
+<h1>Cursor Gateway</h1>
+<nav class="tabs">
+<button class="tab active" data-tab="traces">Traces</button>
+<button class="tab" data-tab="compare">Compare</button>
+<button class="tab" data-tab="config">Config</button>
+</nav>
+<div class="toolbar">
+<div class="dot" id="statusDot"></div>
+<span id="statusText">Connecting</span>
+<button class="btn secondary" id="themeBtn">Theme</button>
+        </div>
+</header>
+<main>
+<aside class="sidebar" id="sidebar">
+<input type="search" id="searchQ" placeholder="Search traces...">
+<select id="filterEndpoint">
+<option value="">All endpoints</option>
+<option value="/v1/chat/completions">chat</option>
+<option value="/v1/messages">messages</option>
+<option value="/v1/responses">responses</option>
+</select>
+<ul class="trace-list" id="traceList"></ul>
+</aside>
+<section class="content">
+<div id="view-traces">
+<div class="stats" id="stats"></div>
+<div class="panel" id="traceDetail"><p class="mono" style="color:var(--muted)">Select a trace</p></div>
+    </div>
+<div id="view-compare" class="hidden">
+<div class="panel">
+<p>Selected <span id="selCount">0</span>/2</p>
+<button class="btn" id="compareBtn">Compare</button>
+<button class="btn secondary" id="clearSelBtn">Clear</button>
+        </div>
+<div id="compareResult"></div>
+            </div>
+<div id="view-config" class="hidden">
+<div class="panel config-form">
+<button class="btn" id="saveConfigBtn">Save</button>
+<button class="btn" id="saveRestartBtn">Save &amp; Restart</button>
+<button class="btn secondary" id="restartBtn">Restart Now</button>
+<label>Config JSON (patch merge)</label>
+<textarea id="configEditor" spellcheck="false"></textarea>
+<p id="configMsg" style="margin-top:8px;font-size:12px;color:var(--muted)"></p>
+        </div>
+    </div>
+</section>
+</main>
+    <script>
+let traces=[], stats={}, selectedId=null, selectedForCompare=new Set(), ws=null;
+const apiKey=localStorage.getItem('cg_api_key')||'';
+function headers(){const h={};if(apiKey)h['Authorization']='Bearer '+apiKey;return h;}
+async function api(path,opt={}){const r=await fetch(path,{...opt,headers:{...headers(),'Content-Type':'application/json',...opt.headers}});if(!r.ok)throw new Error(await r.text());return r;}
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{
+document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+t.classList.add('active');
+['traces','compare','config'].forEach(v=>document.getElementById('view-'+v).classList.toggle('hidden',t.dataset.tab!==v));
+document.getElementById('sidebar').classList.toggle('hidden',t.dataset.tab==='config');
+if(t.dataset.tab==='config')loadConfig();
+});
+document.getElementById('themeBtn').onclick=()=>document.body.classList.toggle('light');
+document.getElementById('searchQ').oninput=fetchTraces;
+document.getElementById('filterEndpoint').onchange=fetchTraces;
+document.getElementById('compareBtn').onclick=runCompare;
+document.getElementById('clearSelBtn').onclick=()=>{selectedForCompare.clear();document.getElementById('selCount').textContent='0';renderTraces();};
+document.getElementById('saveConfigBtn').onclick=()=>saveConfig(false);
+document.getElementById('saveRestartBtn').onclick=()=>saveConfig(true);
+document.getElementById('restartBtn').onclick=async()=>{if(!confirm('Restart?'))return;await api('/api/admin/restart',{method:'POST'});document.getElementById('configMsg').textContent='Restarting...';pollHealth();};
+function connect(){
+const p=location.protocol==='https:'?'wss:':'ws:';
+ws=new WebSocket(p+'//'+location.host+'/ws/events');
+ws.onopen=()=>{document.getElementById('statusDot').className='dot';document.getElementById('statusText').textContent='Connected';};
+ws.onclose=()=>{document.getElementById('statusDot').className='dot off';document.getElementById('statusText').textContent='Disconnected';setTimeout(connect,3000);};
+ws.onmessage=e=>handleMsg(JSON.parse(e.data));
+}
+function handleMsg(d){
+switch(d.type){
+case 'init':traces=d.traces||[];stats=d.stats||{};renderTraces();renderStats();break;
+case 'trace_start':traces.unshift({id:d.id,endpoint:d.data?.endpoint,model:d.data?.model,status:'active',events:[],response_text:''});renderTraces();break;
+case 'trace_delta':{const t=traces.find(x=>x.id===d.id);if(t){if(!t.events)t.events=[];t.events.push(d);t.response_text=(t.response_text||'')+(d.data?.text||'');}if(selectedId===d.id)renderDetail(d.id);break;}
+case 'trace_end':{const t=traces.find(x=>x.id===d.id);if(t){t.status='completed';t.duration_ms=d.data?.duration_ms;t.usage=d.data?.usage;}renderTraces();renderStats();if(selectedId===d.id)renderDetail(d.id);break;}
+case 'trace_error':{const t=traces.find(x=>x.id===d.id);if(t)t.status='error';renderTraces();break;}
+}}
+async function fetchTraces(){
+const q=document.getElementById('searchQ').value;
+const ep=document.getElementById('filterEndpoint').value;
+let url='/api/traces?';
+if(q)url+='q='+encodeURIComponent(q)+'&';
+if(ep)url+='endpoint='+encodeURIComponent(ep);
+try{traces=await (await api(url)).json();renderTraces();}catch(e){console.error(e);}
+}
+function renderStats(){
+const s=stats;
+document.getElementById('stats').innerHTML=
+'<div class="stat"><div class="l">Total</div><div class="v">'+(s.total_traces||0)+'</div></div>'+
+'<div class="stat"><div class="l">Active</div><div class="v">'+(s.active||0)+'</div></div>'+
+'<div class="stat"><div class="l">Done</div><div class="v">'+(s.completed||0)+'</div></div>'+
+'<div class="stat"><div class="l">Tokens</div><div class="v">'+(s.total_tokens||0).toLocaleString()+'</div></div>';
+}
+function renderTraces(){
+const ep=document.getElementById('filterEndpoint').value;
+const q=document.getElementById('searchQ').value.toLowerCase();
+const list=document.getElementById('traceList');
+list.innerHTML=traces.filter(t=>{
+if(ep&&t.endpoint!==ep)return false;
+if(q&&!((t.id||'').toLowerCase().includes(q)||(t.response_text||'').toLowerCase().includes(q)))return false;
+return true;
+}).map(t=>'<li class="trace-item '+(t.id===selectedId?'active':'')+' '+(selectedForCompare.has(t.id)?'selected':'')+'" data-id="'+t.id+'"><div><strong>'+(t.endpoint||'?')+'</strong> <span class="badge '+(t.status==='completed'?'ok':t.status==='error'?'err':'')+'">'+(t.status||'')+'</span></div>'+(t.model||'auto')+' '+(t.duration_ms?t.duration_ms+'ms':'')+'</li>').join('');
+list.querySelectorAll('.trace-item').forEach(el=>el.onclick=()=>{
+const id=el.dataset.id;
+if(document.querySelector('.tab.active').dataset.tab==='compare'){
+if(selectedForCompare.has(id))selectedForCompare.delete(id);else{if(selectedForCompare.size>=2)selectedForCompare.clear();selectedForCompare.add(id);}
+document.getElementById('selCount').textContent=selectedForCompare.size;renderTraces();return;
+}
+selectedId=id;renderTraces();renderDetail(id);
+});
+}
+async function renderDetail(id){
+let t=traces.find(x=>x.id===id);
+const el=document.getElementById('traceDetail');
+if(!t){el.innerHTML='<p>Not found</p>';return;}
+try{const full=await (await api('/api/traces/'+encodeURIComponent(id))).json();const i=traces.findIndex(x=>x.id===id);if(i>=0)traces[i]=full;t=full;}catch(_){}
+const tools=(t.events||[]).filter(e=>e.type==='trace_tool'||e.type==='trace_blocked').map(e=>'<div class="mono">'+e.type+': '+JSON.stringify(e.data)+'</div>').join('');
+const err=t.error?'<p style="color:var(--err)">\u9519\u8bef: '+esc(t.error)+'</p>':'';
+const reqMeta=t.request?'<div class="panel" style="margin:8px 0"><h4>\u8bf7\u6c42\u6458\u8981</h4><pre class="mono" style="font-size:11px;white-space:pre-wrap">'+esc(JSON.stringify(t.request,null,2))+'</pre></div>':'';
+const reqBody=t.request_body?'<div class="panel" style="margin:8px 0"><h4>\u8bf7\u6c42\u4f53</h4><pre class="mono text-box" style="max-height:240px;overflow:auto;font-size:11px">'+esc(t.request_body)+'</pre></div>':'<p style="font-size:12px;color:var(--muted)">\u65e0\u8bf7\u6c42\u4f53</p>';
+el.innerHTML='<h3>'+(t.endpoint||'')+' - '+(t.model||'')+'</h3><p style="font-size:12px;color:var(--muted)">profile: '+(t.agent_profile||'-')+' | '+(t.status||'')+' | '+(t.duration_ms?t.duration_ms+'ms':'')+'</p>'+err+reqMeta+reqBody+'<h4 style="margin-top:12px">\u54cd\u5e94</h4><div class="text-box mono">'+esc(t.response_text||'(\u65e0\u54cd\u5e94\u6587\u672c)')+'</div>'+tools+'<p style="margin-top:8px"><a class="btn secondary" href="/api/traces/'+id+'/export?format=json">JSON</a> <a class="btn secondary" href="/api/traces/'+id+'/export?format=html">HTML</a></p>';
+}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function inlineDiff(a,b){
+let out='',i=0,j=0;
+while(i<a.length||j<b.length){
+if(a[i]===b[j]){out+=esc(a[i]||'');i++;j++;continue;}
+out+='<span class="diff-del">'+esc(a[i]||'')+'</span><span class="diff-add">'+esc(b[j]||'')+'</span>';
+if(a[i])i++;if(b[j])j++;
+}
+return out;
+}
+async function runCompare(){
+const ids=[...selectedForCompare];
+if(ids.length!==2){alert('Select 2 traces');return;}
+const data=await (await api('/api/traces/compare?a='+ids[0]+'&b='+ids[1])).json();
+const a=data.trace_a,b=data.trace_b;
+document.getElementById('compareResult').innerHTML='<div class="compare-grid"><div class="panel"><h4>A</h4><pre class="mono">'+esc(a.response_text||'')+'</pre></div><div class="panel"><h4>B</h4><pre class="mono">'+esc(b.response_text||'')+'</pre></div></div><div class="panel"><h4>Diff</h4><div class="text-box mono">'+inlineDiff(a.response_text||'',b.response_text||'')+'</div></div><pre class="mono">'+esc(JSON.stringify(data.differences,null,2))+'</pre>';
+}
+async function loadConfig(){
+const data=await (await api('/api/config')).json();
+document.getElementById('configEditor').value=JSON.stringify(data.config,null,2);
+}
+async function saveConfig(restart){
+try{
+const patch=JSON.parse(document.getElementById('configEditor').value);
+const r=await api(restart?'/api/config?restart=true':'/api/config',{method:'PUT',body:JSON.stringify({patch,restart})});
+const j=await r.json();
+document.getElementById('configMsg').textContent=restart?'Saved, restarting...':('Saved'+(j.requires_restart?' (restart needed)':''));
+if(restart)pollHealth();
+}catch(e){document.getElementById('configMsg').textContent='Error: '+e.message;}
+}
+function pollHealth(){
+let n=0;const iv=setInterval(async()=>{n++;try{await fetch('/healthz');document.getElementById('configMsg').textContent='OK';clearInterval(iv);connect();fetchTraces();}catch(_){if(n>30){clearInterval(iv);}}},1000);
+}
+connect();fetchTraces();
+const _tab=new URLSearchParams(location.search).get('tab');
+if(_tab)document.querySelector('.tab[data-tab="'+_tab+'"]')?.click();
+api('/api/stats').then(r=>r.json()).then(s=>{stats=s;renderStats();});
+    </script>
+</body>
+</html>

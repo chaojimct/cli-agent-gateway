@@ -1,0 +1,12 @@
+bin/
+*.exe
+sessions.json
+sessions.json.lock
+config.local.yaml
+.env
+*.log
+test-*.log
+runtime.log
+tmp_*
+config-debug.yaml
+.vscode/launch.json

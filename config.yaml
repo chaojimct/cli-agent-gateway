@@ -1,0 +1,46 @@
+admin:
+    restart_grace: 30s
+auth:
+    api_key: ""
+    enabled: false
+cursor:
+    agent_mode: plan
+    agent_profile: model
+    approve_mcps: false
+    binary_path: cursor-agent
+    client_tools_agent_mode: plan
+    client_tools_mode: auto
+    default_model: composer-2.5-fast
+    force: false
+    max_concurrent: 8
+    model_retry_on_tool: true
+    model_system_preamble: true
+    model_workspace: ""
+    on_tool_call: abort
+    proxy: ""
+    request_timeout: 5m0s
+    stream_pending_mode: optimistic
+    thinking_visibility: reasoning_content
+    use_daemon: false
+    workspace: ""
+logging:
+    format: json
+    level: info
+server:
+    allowed_origins:
+        - '*'
+    host: 127.0.0.1
+    max_request_body: 8.388608e+06
+    port: 8080
+    read_timeout: 30s
+    shutdown_timeout: 10s
+    write_timeout: 5m0s
+session:
+    enabled: true
+    lock_timeout: 5s
+    storage_path: sessions.json
+webui:
+    allow_unauthenticated_config: true
+    max_delta_bytes: 131072
+    max_traces: 2000
+    store_request_body: true
