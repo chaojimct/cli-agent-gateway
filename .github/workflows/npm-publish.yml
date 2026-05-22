@@ -3,6 +3,12 @@ name: npm-publish
 on:
   release:
     types: [published]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "npm version (e.g. 0.1.2), defaults to package.json"
+        required: false
+        type: string
 
 permissions:
   contents: read
@@ -22,11 +28,19 @@ jobs:
           node-version: "20"
           registry-url: https://registry.npmjs.org
 
-      - name: Sync package version from release tag
+      - name: Sync package version
         shell: bash
         run: |
-          TAG="${{ github.event.release.tag_name }}"
-          npm version "${TAG#v}" --no-git-tag-version --allow-same-version
+          if [ -n "${{ github.event.release.tag_name }}" ]; then
+            VER="${{ github.event.release.tag_name }}"
+            VER="${VER#v}"
+          elif [ -n "${{ inputs.version }}" ]; then
+            VER="${{ inputs.version }}"
+            VER="${VER#v}"
+          else
+            VER="$(node -p "require('./package.json').version")"
+          fi
+          npm version "$VER" --no-git-tag-version --allow-same-version
 
       - name: Publish
         run: npm publish --access public
