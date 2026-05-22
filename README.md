@@ -207,7 +207,7 @@ GitHub Actions (`.github/workflows/build.yml`) cross-compiles for **6 platforms*
 | Windows amd64 / arm64 | `.zip` |
 | macOS amd64 / arm64 | `.tar.gz` |
 
-Download from the **Actions** run → **Artifacts**. Push a `v*` tag (e.g. `v0.1.0`) to create a GitHub Release with all archives attached.
+Download from the **Actions** run → **Artifacts**, or get a versioned build from **[Releases](https://github.com/chaojimct/cli-agent-gateway/releases)**. Push a `v*` tag (e.g. `v0.1.1`) to publish a new release automatically.
 
 CI (`.github/workflows/ci.yml`) runs `go test ./...` on Ubuntu, Windows, and macOS.
 

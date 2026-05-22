@@ -207,7 +207,7 @@ GitHub Actions（`.github/workflows/build.yml`）在每次 push 到 `main` 及 P
 | Windows amd64 / arm64 | `.zip` |
 | macOS amd64 / arm64 | `.tar.gz` |
 
-在 **Actions** 运行记录 → **Artifacts** 中下载。推送 `v*` 标签（如 `v0.1.0`）会自动创建 GitHub Release 并附上全部压缩包。
+在 **Actions** 运行记录 → **Artifacts** 中下载，或从 **[Releases](https://github.com/chaojimct/cli-agent-gateway/releases)** 获取带版本号的正式构建。推送 `v*` 标签（如 `v0.1.1`）会自动发布新版本。
 
 CI（`.github/workflows/ci.yml`）在 Ubuntu、Windows、macOS 上运行 `go test ./...`。
 

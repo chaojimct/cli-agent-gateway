@@ -113,9 +113,36 @@ jobs:
         run: |
           mkdir -p release
           find dist -type f \( -name '*.tar.gz' -o -name '*.zip' \) -exec cp {} release/ \;
+          ls -lh release/
+
+      - name: Generate checksums
+        shell: bash
+        run: |
+          cd release
+          sha256sum *.tar.gz *.zip > SHA256SUMS.txt
+          cat SHA256SUMS.txt
 
       - name: Create release
         uses: softprops/action-gh-release@v2
         with:
+          name: CLI Agent Gateway ${{ github.ref_name }}
+          tag_name: ${{ github.ref_name }}
           files: release/*
+          body: |
+            ## CLI Agent Gateway ${{ github.ref_name }}
+
+            HTTP gateway for CLI coding agents (Cursor, Claude Code, Kimi, …) via ACP.
+
+            ### Downloads
+
+            | Platform | File |
+            |----------|------|
+            | Linux amd64 | `cli-agent-gateway_${{ github.ref_name }}_linux-amd64.tar.gz` |
+            | Linux arm64 | `cli-agent-gateway_${{ github.ref_name }}_linux-arm64.tar.gz` |
+            | Windows amd64 | `cli-agent-gateway_${{ github.ref_name }}_windows-amd64.zip` |
+            | Windows arm64 | `cli-agent-gateway_${{ github.ref_name }}_windows-arm64.zip` |
+            | macOS amd64 (Intel) | `cli-agent-gateway_${{ github.ref_name }}_darwin-amd64.tar.gz` |
+            | macOS arm64 (Apple Silicon) | `cli-agent-gateway_${{ github.ref_name }}_darwin-arm64.tar.gz` |
+
+            Verify with `SHA256SUMS.txt`.
           generate_release_notes: true
