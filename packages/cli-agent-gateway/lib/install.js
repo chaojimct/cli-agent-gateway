@@ -28,34 +28,56 @@ function shouldSkipInstall() {
   return null;
 }
 
-function download(url, dest) {
+function download(url, dest, retries = 3) {
   return new Promise((resolve, reject) => {
-    const file = fs.createWriteStream(dest);
-    const request = (target) => {
-      https
-        .get(target, (res) => {
-          if (
-            res.statusCode &&
-            res.statusCode >= 300 &&
-            res.statusCode < 400 &&
-            res.headers.location
-          ) {
-            res.resume();
-            request(res.headers.location);
-            return;
-          }
-          if (res.statusCode !== 200) {
-            res.resume();
-            reject(new Error(`HTTP ${res.statusCode} for ${target}`));
-            return;
-          }
-          res.pipe(file);
-          file.on('finish', () => file.close(() => resolve(dest)));
-        })
-        .on('error', reject);
+    let lastErr;
+    const attempt = (remaining) => {
+      const file = fs.createWriteStream(dest);
+      const request = (target) => {
+        https
+          .get(target, (res) => {
+            if (
+              res.statusCode &&
+              res.statusCode >= 300 &&
+              res.statusCode < 400 &&
+              res.headers.location
+            ) {
+              res.resume();
+              request(res.headers.location);
+              return;
+            }
+            if (res.statusCode !== 200) {
+              res.resume();
+              reject(new Error(`HTTP ${res.statusCode} for ${target}`));
+              return;
+            }
+            res.pipe(file);
+            file.on('finish', () => file.close(() => resolve(dest)));
+          })
+          .on('error', (err) => {
+            lastErr = err;
+            file.close(() => {
+              if (remaining > 1) {
+                fs.rmSync(dest, { force: true });
+                setTimeout(() => attempt(remaining - 1), 1000);
+              } else {
+                reject(err);
+              }
+            });
+          });
+      };
+      request(url);
+      file.on('error', (err) => {
+        lastErr = err;
+        if (remaining > 1) {
+          fs.rmSync(dest, { force: true });
+          setTimeout(() => attempt(remaining - 1), 1000);
+        } else {
+          reject(err);
+        }
+      });
     };
-    request(url);
-    file.on('error', reject);
+    attempt(retries);
   });
 }
 
