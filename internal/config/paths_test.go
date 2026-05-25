@@ -29,7 +29,12 @@ func TestResolveConfigPath_prefersCwd(t *testing.T) {
 		t.Fatal(err)
 	}
 	if got != cwdConfig {
-		t.Fatalf("got %q, want %q", got, cwdConfig)
+		// macOS: /var is a symlink to /private/var
+		gotClean, _ := filepath.EvalSymlinks(got)
+		wantClean, _ := filepath.EvalSymlinks(cwdConfig)
+		if gotClean != wantClean {
+			t.Fatalf("got %q, want %q", got, cwdConfig)
+		}
 	}
 }
 
