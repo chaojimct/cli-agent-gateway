@@ -309,7 +309,9 @@ func probeACP(ctx context.Context, p Profile, cfg *config.Config, logger *slog.L
 	ctx, cancel := context.WithTimeout(ctx, probeTimeoutFor(p))
 	defer cancel()
 
-	c, err := acp.NewClient(ctx, p.ACPConfig(&cfg.Cursor, logger, p.ShouldSkipAuth()))
+	// Always skip authenticate during probe — only verify the agent is reachable
+	// and supports ACP. Real authentication happens lazily on first request.
+	c, err := acp.NewClient(ctx, p.ACPConfig(&cfg.Cursor, logger, true))
 	if err != nil {
 		return false
 	}

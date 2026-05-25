@@ -1,47 +1,94 @@
-# Copy to config.local.yaml (gitignored). Overrides config.yaml keys.
-
-# logging:
-#   level: debug
-#   format: text
-
-# server:
-#   port: 8080
-
-# auth:
-#   enabled: false
-#   api_key: ""
-
-cursor:
-  binary_path: cursor-agent          # Windows: cursor-agent.cmd or full path
-  # proxy: http://127.0.0.1:7890
-  default_model: cursor/composer-2.5-fast
-  # OpenCode tool requests use client_tools_agent_mode, not agent_mode
-  client_tools_agent_mode: plan
-  # workspace: /path/to/project
-
-# agents:
-#   auto_discover: true
-#   default: cursor
-#   model_cache_ttl: 5m
-#   profiles:
-#     claude:
-#       enabled: true
-#       spawn:
-#         command: npx
-#         args: ["-y", "@agentclientprotocol/claude-agent-acp"]
-#       probe:
-#         reject_auth_methods: [cursor_login]
-#       models:
-#         source: session_new
-#     kimi:
-#       enabled: true
-#       prefix: kimi
-#       spawn:
-#         command: kimi-cli
-#         args: ["acp"]
-#       models:
-#         source: session_new
-
-# webui:
-#   store_request_body: true
-#   max_traces: 2000
+# Copy to config.local.yaml (gitignored). Overrides config.yaml keys.
+
+
+
+# logging:
+
+#   level: debug
+
+#   format: text
+
+
+
+# server:
+
+#   port: 8080
+
+
+
+# auth:
+
+#   enabled: false
+
+#   api_key: ""
+
+
+
+cursor:
+
+  binary_path: cursor-agent          # Windows: cursor-agent.cmd or full path
+
+  # proxy: http://127.0.0.1:7890
+
+  default_model: auto
+
+  # OpenCode tool requests use client_tools_agent_mode, not agent_mode
+
+  client_tools_agent_mode: plan
+
+  # workspace: /path/to/project
+
+
+
+# agents:
+
+#   auto_discover: true
+
+#   default: cursor
+
+#   model_cache_ttl: 5m
+
+#   profiles:
+
+#     claude:
+
+#       enabled: true
+
+#       spawn:
+
+#         command: npx
+
+#         args: ["-y", "@agentclientprotocol/claude-agent-acp"]
+
+#       probe:
+
+#         reject_auth_methods: [cursor_login]
+
+#       models:
+
+#         source: session_new
+
+#     kimi:
+
+#       enabled: true
+
+#       prefix: kimi
+
+#       spawn:
+
+#         command: kimi-cli
+
+#         args: ["acp"]
+
+#       models:
+
+#         source: session_new
+
+
+
+# webui:
+
+#   store_request_body: true
+
+#   max_traces: 2000
+

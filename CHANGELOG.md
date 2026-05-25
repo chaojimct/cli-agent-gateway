@@ -5,13 +5,25 @@ All notable changes to this project are documented here.
 Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
  versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-[简体中文摘要](#简体中文摘要) · [Unreleased](#unreleased) · [0.1.1](#011---2026-05-22)
+[简体中文摘要](#简体中文摘要) · [Unreleased](#unreleased) · [0.1.3](#013---2026-05-25) · [0.1.1](#011---2026-05-22)
 
 ## [Unreleased]
 
 ### Planned
 - Docker image
 - Homebrew / Scoop install scripts
+
+---
+
+## [0.1.3] - 2026-05-25
+
+### Fixed
+- **Cursor agent auto-discovery** — Probe now skips `authenticate` step; the 4 s timeout was exceeded because `cursor_login` requires a network round-trip to Cursor backend. Authentication still happens lazily on first real request.
+
+### Changed
+- Default model changed to `auto` (agent-native default) in example configs
+
+[0.1.3]: https://github.com/chaojimct/cli-agent-gateway/releases/tag/v0.1.3
 
 ---
 
@@ -54,6 +66,11 @@ First public release.
 ---
 
 ## 简体中文摘要
+
+### [0.1.3] - 2026-05-25
+
+- 修复 Cursor agent 自动发现：probe 跳过 authenticate，避免网络超时导致发现失败
+- 默认模型改为 `auto`
 
 ### [0.1.2] - 2026-05-22
 
