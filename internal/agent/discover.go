@@ -90,7 +90,7 @@ func Discover(ctx context.Context, cfg *config.Config, logger *slog.Logger) []*P
 			out = append(out, &p)
 			mu.Unlock()
 			if logger != nil {
-				logger.Info("discovered acp agent", "agent", p.ID, "command", p.Command())
+				logger.Debug("discovered acp agent", "agent", p.ID, "command", p.Command())
 			}
 		}(profile)
 	}

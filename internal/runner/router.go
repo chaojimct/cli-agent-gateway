@@ -59,7 +59,7 @@ func (r *AgentRouter) StartAsync() {
 		r.rebuildGateways()
 		r.ready.Store(true)
 		if r.logger != nil {
-			r.logger.Info("agent router ready", "agents", len(r.registry.Profiles()))
+			r.logger.Debug("agent router ready", "agents", len(r.registry.Profiles()))
 		}
 	}()
 }

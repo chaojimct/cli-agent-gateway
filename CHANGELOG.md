@@ -5,13 +5,27 @@ All notable changes to this project are documented here.
 Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
  versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-[简体中文摘要](#简体中文摘要) · [Unreleased](#unreleased) · [0.1.4](#014---2026-05-25) · [0.1.1](#011---2026-05-22)
+[简体中文摘要](#简体中文摘要) · [Unreleased](#unreleased) · [0.1.5](#015---2026-05-25) · [0.1.1](#011---2026-05-22)
 
 ## [Unreleased]
 
 ### Planned
 - Docker image
 - Homebrew / Scoop install scripts
+
+---
+
+## [0.1.5] - 2026-05-25
+
+### Added
+- **Startup banner** — Clean service info panel (URLs, agents, config) replaces raw JSON logs on startup
+- **First-run wizard** — Interactive setup on first launch: port, proxy, model, agent mode, auth
+- **`--debug` flag** — Enables detailed JSON log output; default is quiet (errors only)
+
+### Changed
+- Agent discovery and router logs downgraded to DEBUG level
+
+[0.1.5]: https://github.com/chaojimct/cli-agent-gateway/releases/tag/v0.1.5
 
 ---
 
@@ -66,6 +80,12 @@ First public release.
 ---
 
 ## 简体中文摘要
+
+### [0.1.5] - 2026-05-25
+
+- 启动 Banner：美观的服务信息面板替代原始 JSON 日志
+- 首次运行引导：端口、代理、模型、认证等交互式配置
+- `--debug` 标志：开启详细日志；默认安静模式
 
 ### [0.1.4] - 2026-05-25
 

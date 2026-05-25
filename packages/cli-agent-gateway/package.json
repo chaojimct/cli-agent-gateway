@@ -1,6 +1,6 @@
 {
   "name": "cli-agent-gateway",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "HTTP gateway for CLI coding agents (Cursor, Claude, Kimi) via ACP",
   "homepage": "https://github.com/chaojimct/cli-agent-gateway",
   "repository": {

@@ -10,6 +10,7 @@ import (
 	"os/signal"
 	"sync/atomic"
 	"syscall"
+	"time"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/chaojimct/cli-agent-gateway/internal/admin"
@@ -36,11 +37,17 @@ func main() {
 
 	configFlag := flag.String("config", config.DefaultConfigFileName, "config file path (default: ./config.yaml if present, else user config dir)")
 	showVersion := flag.Bool("version", false, "show version")
+	debugFlag := flag.Bool("debug", false, "enable debug logging")
 	flag.Parse()
 
 	if *showVersion {
 		fmt.Printf("cli-agent-gateway %s\n", version)
 		os.Exit(0)
+	}
+
+	// First-run wizard: check if any config exists before ResolveConfigPath creates defaults
+	if !hasExistingConfig() {
+		runWizard()
 	}
 
 	configPath, err := config.ResolveConfigPath(*configFlag)
@@ -57,7 +64,7 @@ func main() {
 
 	_ = cursor.EnsureModelSandbox(&cfg.Cursor)
 
-	logger := setupLogger(cfg.Log)
+	logger := setupLogger(cfg.Log, *debugFlag)
 
 	runner := cursor.NewRunner(cfg, cfg.Cursor.RequestTimeout, logger)
 
@@ -172,16 +179,29 @@ func main() {
 	srv.Handler = r
 
 	go func() {
-		logger.Info("starting cli-agent-gateway",
-			"version", version,
-			"addr", cfg.Addr(),
-			"config", configPath,
-			"profile", cfg.Cursor.AgentProfile,
-		)
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			logger.Error("server error", "error", err)
 			os.Exit(1)
 		}
+	}()
+
+	// Wait for agent discovery then print startup banner
+	go func() {
+		deadline := make(chan struct{})
+		go func() {
+			time.Sleep(30 * time.Second)
+			close(deadline)
+		}()
+		for !runner.IsReady() {
+			select {
+			case <-deadline:
+				goto done
+			default:
+				time.Sleep(200 * time.Millisecond)
+			}
+		}
+	done:
+		printBanner(os.Stderr, version, cfg, runner.Registry())
 	}()
 
 	sigCh := make(chan os.Signal, 1)
@@ -212,21 +232,22 @@ func dynamicAuth(enabled *atomic.Bool, key *atomic.Value) func(http.Handler) htt
 	}
 }
 
-func setupLogger(cfg config.LogConfig) *slog.Logger {
+func setupLogger(cfg config.LogConfig, debug bool) *slog.Logger {
 	var level slog.Level
-	switch cfg.Level {
-	case "debug":
+	var format string
+	if debug {
 		level = slog.LevelDebug
-	case "warn":
-		level = slog.LevelWarn
-	case "error":
+		format = cfg.Format
+		if format == "" {
+			format = "json"
+		}
+	} else {
 		level = slog.LevelError
-	default:
-		level = slog.LevelInfo
+		format = "text"
 	}
 	opts := &slog.HandlerOptions{Level: level}
 	var h slog.Handler
-	if cfg.Format == "text" {
+	if format == "text" {
 		h = slog.NewTextHandler(os.Stdout, opts)
 	} else {
 		h = slog.NewJSONHandler(os.Stdout, opts)
