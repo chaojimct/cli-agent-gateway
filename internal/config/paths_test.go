@@ -19,7 +19,9 @@ func TestResolveConfigPath_prefersCwd(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	t.Chdir(dir)
+	if err := os.Chdir(dir); err != nil {
+		t.Fatal(err)
+	}
 	t.Cleanup(func() { _ = os.Chdir(orig) })
 
 	got, err := ResolveConfigPath("")
@@ -54,7 +56,9 @@ func TestResolveConfigPath_fallsBackToUserDir(t *testing.T) {
 	if err := os.MkdirAll(empty, 0o700); err != nil {
 		t.Fatal(err)
 	}
-	t.Chdir(empty)
+	if err := os.Chdir(empty); err != nil {
+		t.Fatal(err)
+	}
 	t.Cleanup(func() { _ = os.Chdir(orig) })
 
 	got, err := ResolveConfigPath("config.yaml")
